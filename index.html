@@ -258,11 +258,14 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 .why-talk p { margin: .4rem 0 0; max-width: var(--measure); }
 .why-talk ul { margin: .4rem 0 0; padding-left: 1.2rem; }
 .why-talk li { margin: .2rem 0; }
+.fits { list-style: none; padding: 0; margin: 1.75rem 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem 2rem; }
+.fits li { position: relative; padding-left: 1.6rem; max-width: 32rem; }
+.fits li::before { content: ""; position: absolute; left: 0; top: .55em; width: .7rem; height: .7rem; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(185,138,75,.18); }
 [hidden] { display: none !important; }
 .sr-legend, .sr-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @media (max-width: 720px) {
-  .gains, .pictures { grid-template-columns: 1fr; }
+  .gains, .pictures, .fits { grid-template-columns: 1fr; }
   .signal .choices { grid-template-columns: 1fr; }
   .brand { margin-bottom: 17rem; }
   .hidden-words { left: 0; top: 5.5rem; bottom: auto; height: 15rem; padding: 0 1rem; gap: .3rem 1rem; font-size: 1.05rem; }
@@ -284,12 +287,27 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   <div class="hero-text">
     <p class="brand">Ypifany</p>
     <h1>You already decided. Was it the best one?</h1>
-    <p class="lede">Before any big decision, you make a lot of small ones. You choose who to trust, what to check, and what to let a tool or a person handle. Those small choices shape how things turn out, and they are easy to lose track of. This page helps you look at one of your decisions.</p>
+    <p class="lede">Before any big decision, you make a lot of small ones. You choose who to trust, what to check, and what to let a tool or a person handle. Those small choices shape how things turn out, and they are easy to lose track of. This page introduces a process that helps you see what you were counting on, notice sooner when things start to drift, and make your next decision with more of the picture.</p>
     <p class="hint">The words behind this text are some of those small decisions. Move your pointer or finger to look around.</p>
   </div>
 </header>
 
 <main>
+  <section class="block" id="for-you" aria-labelledby="for-you-title">
+    <h2 id="for-you-title">Is this for you?</h2>
+    <p class="intro">The Decision Visibility Model works for one person or for a whole team. It is for you if any of these sound familiar.</p>
+    <ul class="fits">
+      <li>You use AI or an AI agent at work, and you want to stay the one in charge of what it does.</li>
+      <li>You chose a security control, a scan, or a framework, and you are not sure it is doing what you think it is.</li>
+      <li>You hired a person, a contractor, or a vendor, and the results are not what you expected.</li>
+      <li>You sign off on decisions other people prepared, like a policy, a risk, or a system going live.</li>
+      <li>You run a program or a training, and you want to know if it is doing what people believe it does.</li>
+      <li>You started a business or a big project, you have been at it a while, and it is not turning out the way you planned yet.</li>
+      <li>A decision turned out badly, and you want to understand it without blaming yourself or anyone else.</li>
+      <li>You are about to make a big decision, and you want to see what you are betting on first.</li>
+    </ul>
+  </section>
+
   <section class="block" id="why" aria-labelledby="why-title">
     <h2 id="why-title">Why look at a decision?</h2>
     <p class="intro">Every day you hand parts of your decisions to something or someone you trusted. You use an AI tool or agent, a security control, a checklist, a vendor, a policy, or a person you hired. That is how work gets done, and it is not the problem.</p>
