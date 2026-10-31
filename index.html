@@ -261,11 +261,25 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 .fits { list-style: none; padding: 0; margin: 1.75rem 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem 2rem; }
 .fits li { position: relative; padding-left: 1.6rem; max-width: 32rem; }
 .fits li::before { content: ""; position: absolute; left: 0; top: .55em; width: .7rem; height: .7rem; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px rgba(185,138,75,.18); }
+.hero-cta { margin: 1.75rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; }
+.hero-cta span { color: #c9dcda; font-size: .95rem; }
+.button.gold { background: var(--gold-light); border-color: var(--gold-light); color: var(--night); }
+.button.gold:hover { background: #fff; border-color: #fff; color: var(--night); }
+.privacy-note { font-size: .95rem; color: var(--teal); max-width: var(--measure); margin: .5rem 0 0; }
+.about { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 2.5rem; margin-top: 1.5rem; }
+.about .intro { margin-top: 0; }
+.proof { padding-left: 1.2rem; margin: 1rem 0; }
+.proof li { margin: .35rem 0; }
+.roots { border-left: 3px solid var(--gold); padding-left: 1.25rem; }
+.roots h3 { font-size: 1.6rem; color: var(--teal); }
+.roots ul { list-style: none; padding: 0; margin: .5rem 0 0; }
+.roots li { margin: .7rem 0; color: var(--muted); }
+.roots b { color: var(--ink); }
 [hidden] { display: none !important; }
 .sr-legend, .sr-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @media (max-width: 720px) {
-  .gains, .pictures, .fits { grid-template-columns: 1fr; }
+  .gains, .pictures, .fits, .about { grid-template-columns: 1fr; }
   .signal .choices { grid-template-columns: 1fr; }
   .brand { margin-bottom: 17rem; }
   .hidden-words { left: 0; top: 5.5rem; bottom: auto; height: 15rem; padding: 0 1rem; gap: .3rem 1rem; font-size: 1.05rem; }
@@ -288,6 +302,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
     <p class="brand">Ypifany</p>
     <h1>You already decided. Was it the best one?</h1>
     <p class="lede">Before any big decision, you make a lot of small ones. You choose who to trust, what to check, and what to let a tool or a person handle. Those small choices shape how things turn out, and they are easy to lose track of. This page introduces a process that helps you see what you were counting on, notice sooner when things start to drift, and make your next decision with more of the picture.</p>
+    <p class="hero-cta"><a class="button gold" href="#check">Take the Clarity Check</a> <span>Four questions. About two minutes.</span></p>
     <p class="hint">The words behind this text are some of those small decisions. Move your pointer or finger to look around.</p>
   </div>
 </header>
@@ -372,9 +387,39 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
     </div>
   </section>
 
+  <section class="block" id="about" aria-labelledby="about-title">
+    <h2 id="about-title">Who created DVM</h2>
+    <div class="about">
+      <div>
+        <p class="intro">Cheryl Abram created the Decision Visibility Model. She is the founder of Ypifany, an Army veteran, and a former social worker who now works in cybersecurity and program evaluation.</p>
+        <p class="intro">DVM came out of two kinds of work. In cybersecurity, she reviewed whether security controls on federal systems were doing what people believed they were doing. In evaluation, she checked whether programs produced what people believed they produced. Both kept showing her the same thing: the gap between what people expected and what was really happening.</p>
+        <ul class="proof">
+          <li>Lead evaluator for the Federal Executive Institute</li>
+          <li>Curriculum design and evaluation for Prince William County's technology inclusion work</li>
+          <li>Nonprofit cybersecurity risk workshop for the Loudoun Chamber</li>
+          <li>Author of "Unlearning Evaluation" in T&amp;D Magazine</li>
+          <li>Speaker at the OPM Federal Evaluation Conference, Washington Evaluators, and ATD</li>
+        </ul>
+        <p><a href="https://www.ypifany.org/about">More about Cheryl</a></p>
+      </div>
+      <div class="roots">
+        <h3>Where DVM comes from</h3>
+        <p>DVM stands on ideas from many traditions.</p>
+        <ul>
+          <li><b>Sankofa</b>, an Akan principle from Ghana: go back and get what you need to move forward.</li>
+          <li><b>Carlos Matus</b> of Chile, who treated every plan as a bet made by a real person in a real situation.</li>
+          <li><b>Sohail Inayatullah</b> of Pakistan and Australia, who showed how the way you frame a problem shapes the answers you can see.</li>
+          <li><b>Hansei</b>, Toyota's practice from Japan of honest reflection without blame.</li>
+          <li><b>The U.S. Army's After Action Review</b>, which looks at what happened with the same honesty.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="check" aria-labelledby="check-title">
     <h2 id="check-title">The Clarity Check</h2>
-    <p class="intro">Four short questions about one decision. You can pick one that is behind you, one that is still playing out, or one you have not made yet.</p>
+    <p class="intro">Four short questions about one decision. You can pick one that is behind you, one that is still playing out, or one you have not made yet. It takes about two minutes.</p>
+    <p class="privacy-note">Nothing you type leaves this page. There is no account, and your answers clear when you close it.</p>
 
     <div class="panel" id="check-panel">
       <p class="progress" id="check-progress" aria-live="polite">Question 1 of 4</p>
@@ -457,7 +502,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
           <li>A check on whether you are watching the right signs</li>
           <li>One next step for this week</li>
         </ul>
-        <p>If you keep going, the session fee counts toward the work you do together after.</p>
+        <p>If you keep going, the session fee counts toward the work you do together after. <a href="#about">Who is Cheryl?</a></p>
       </div>
       <div class="actions">
         <button type="button" id="go-lookback">Take a short look back</button>
@@ -519,7 +564,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
           <li>A check on whether you are watching the right signs</li>
           <li>One next step for this week</li>
         </ul>
-        <p>If you keep going, the session fee counts toward the work you do together after.</p>
+        <p>If you keep going, the session fee counts toward the work you do together after. <a href="#about">Who is Cheryl?</a></p>
       </div>
 
       <div class="actions no-print">
