@@ -43,7 +43,7 @@ To publish, set **Settings → Pages → Source** to **GitHub Actions** in this 
 
 ## Learn more
 
-The full model is described in the concept paper *The Decision Visibility Model: You Already Decided. Can You See the Decision?* For a Clarity Session, visit **[Ypifany](https://ypifany.org)**.
+The full model is described in the concept paper *The Decision Visibility Model: You Already Decided. Can You See the Decision?* For a Clarity Session, [start a conversation with Cheryl](https://www.ypifany.org/start-a-conversation).
 
 ## License and reuse
 
