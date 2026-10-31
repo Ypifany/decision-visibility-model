@@ -242,11 +242,25 @@ footer .inner { max-width: 64rem; margin: 0 auto; display: flex; flex-wrap: wrap
 footer a { color: var(--gold-light); }
 footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.4rem; color: #fff; }
 
+.gains { list-style: none; padding: 0; margin: 2rem 0 1.5rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+.gains li { border-top: 3px solid var(--gold); padding-top: .9rem; }
+.gains h3 { font-size: 1.6rem; color: var(--teal); }
+.gains p { margin: .4rem 0 0; color: var(--muted); }
+.pictures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; margin-top: 2rem; }
+.pictures figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; }
+.pictures svg { width: 100%; height: auto; display: block; }
+.pictures figcaption { color: var(--muted); font-size: .95rem; margin-top: .75rem; }
+.svg-center { font-family: "Instrument Serif", Georgia, serif; font-size: 26px; fill: var(--ink); }
+.svg-label { font: 600 15px "Public Sans", system-ui, sans-serif; fill: var(--ink); }
+.svg-small { font: 400 13px "Public Sans", system-ui, sans-serif; fill: var(--muted); }
+.why-talk { margin-top: 1.75rem; padding: 1rem 1.25rem; background: var(--teal-soft); border-radius: 8px; }
+.why-talk h4 { margin: 0; font: 400 1.5rem "Instrument Serif", Georgia, serif; color: var(--night); }
+.why-talk p { margin: .4rem 0 0; max-width: var(--measure); }
 [hidden] { display: none !important; }
 .sr-legend, .sr-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 @media (max-width: 720px) {
-  .loop { grid-template-columns: 1fr; }
+  .gains, .pictures { grid-template-columns: 1fr; }
   .signal .choices { grid-template-columns: 1fr; }
   .brand { margin-bottom: 17rem; }
   .hidden-words { left: 0; top: 5.5rem; bottom: auto; height: 15rem; padding: 0 1rem; gap: .3rem 1rem; font-size: 1.05rem; }
@@ -263,11 +277,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 
 <header class="hero" id="hero">
   <ul class="hidden-words" aria-hidden="true">
-    <li>what we measure</li><li>whose expertise we trust</li><li>the vendor</li><li>the default setting</li>
-    <li>what the AI may access</li><li>which assumptions we stopped questioning</li><li>the threshold</li>
-    <li>what needs human review</li><li>the policy we signed</li><li>what deserves our attention</li>
-    <li>who owns it</li><li>what we were betting on</li><li>the recommendation we accepted</li>
-    <li>what we decided not to look at</li><li>the authority we gave the system</li><li>the data we approved</li>
+    <li>what we measure</li><li>the control we chose</li><li>the person we hired</li><li>the vendor's promise</li><li>the default setting</li><li>what the AI may access</li><li>the risk we accepted</li><li>which assumptions we stopped questioning</li><li>who has admin access</li><li>the patch we put off</li><li>what needs human review</li><li>the checklist we followed</li><li>the policy we signed</li><li>the scan we trusted</li><li>who owns it</li><li>what we were betting on</li><li>the recommendation we accepted</li><li>what we decided not to look at</li>
   </ul>
   <div class="hero-text">
     <p class="brand">Ypifany</p>
@@ -278,26 +288,69 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 </header>
 
 <main>
+  <section class="block" id="why" aria-labelledby="why-title">
+    <h2 id="why-title">Why look at a decision?</h2>
+    <p class="intro">Every day you hand parts of your decisions to something else. You use an AI tool, a security control, a checklist, a vendor, a policy, or a person you hired. That is how work gets done, and it is not the problem.</p>
+    <p class="intro">The problem is what happens when something goes off track. Most people find out the hard way, through a complaint, a failed audit, or a meeting with the boss. And when it goes wrong, nobody asks the tool. They ask you.</p>
+    <ul class="gains">
+      <li>
+        <h3>See trouble sooner</h3>
+        <p>Notice a decision drifting while you can still change course, before it turns into a surprise.</p>
+      </li>
+      <li>
+        <h3>Show how you decided</h3>
+        <p>Be able to say what you chose, what you handed off, and what you were counting on. People can see that you are the one driving.</p>
+      </li>
+      <li>
+        <h3>Make the next call easier</h3>
+        <p>Each look back shows you something you could not see before. A wrong call becomes one you can learn from and recover from.</p>
+      </li>
+    </ul>
+    <p class="intro">Lots of training teaches you to do things faster with AI. This is for what comes after: staying in the driver's seat as more of your work runs on its own.</p>
+    <p class="quote">DVM does not decide for you, and it does not promise a perfect outcome. It works like a flashlight in a dark room. You still choose, with more of the picture.</p>
+  </section>
+
   <section class="block" id="how" aria-labelledby="how-title">
-    <h2 id="how-title">How the Decision Visibility Model works</h2>
-    <p class="intro">DVM does not grade a decision as right or wrong. It looks at the distance between what you expected and what reality is showing you. That distance is information, not failure. It moves in three steps, always about one decision at a time.</p>
-    <ol class="loop">
-      <li>
-        <h3>Look back</h3>
-        <p>What were you betting on, what happened, and where is the gap?</p>
-        <p class="where">You can try this below.</p>
-      </li>
-      <li>
-        <h3>Look at now</h3>
-        <p>What do you really have, what did you hand off, and is this still the right problem?</p>
-        <p class="where">Done together in sessions.</p>
-      </li>
-      <li>
-        <h3>Look ahead</h3>
-        <p>What is your new bet, what will you watch, and what will you do?</p>
-        <p class="where">Done together in sessions.</p>
-      </li>
-    </ol>
+    <h2 id="how-title">What the process looks like</h2>
+    <p class="intro">DVM looks at one decision at a time. It moves around a loop in three steps. Each time around, you see a little more.</p>
+    <div class="pictures">
+      <figure>
+        <svg viewBox="0 0 400 360" role="img" aria-labelledby="loop-title loop-desc">
+          <title id="loop-title">The DVM loop</title>
+          <desc id="loop-desc">A circle in three parts around one decision. Look back, which you can try on this page. Look at now and look ahead, which happen in sessions. Then the loop starts again.</desc>
+          <defs><marker id="ar1" viewBox="0 0 10 10" refX="2" refY="5" markerUnits="userSpaceOnUse" markerWidth="34" markerHeight="34" orient="auto"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--teal)"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="2" refY="5" markerUnits="userSpaceOnUse" markerWidth="34" markerHeight="34" orient="auto"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--gold)"/></marker><marker id="ar3" viewBox="0 0 10 10" refX="2" refY="5" markerUnits="userSpaceOnUse" markerWidth="34" markerHeight="34" orient="auto"><path d="M0 0 L10 5 L0 10 Z" style="fill:var(--night)"/></marker></defs>
+          <path d="M211.3 50.5 A130 130 0 0 1 312.6 245" style="fill:none;stroke:var(--teal);stroke-width:22" marker-end="url(#ar1)"/>
+          <path d="M306.5 254.6 A130 130 0 0 1 102 263" style="fill:none;stroke:var(--gold);stroke-width:22" marker-end="url(#ar2)"/>
+          <path d="M82.2 234.9 A130 130 0 0 1 176 52" style="fill:none;stroke:var(--night);stroke-width:22" marker-end="url(#ar3)"/>
+          <text x="200" y="174" text-anchor="middle" class="svg-center">One decision</text>
+          <text x="200" y="198" text-anchor="middle" class="svg-small">What can you see now?</text>
+          <text x="252" y="128" text-anchor="middle" class="svg-label" style="fill:var(--teal)">Look back</text>
+          <text x="252" y="148" text-anchor="middle" class="svg-small">try it here</text>
+          <text x="200" y="268" text-anchor="middle" class="svg-label" style="fill:var(--gold)">Look at now</text>
+          <text x="200" y="288" text-anchor="middle" class="svg-small">in sessions</text>
+          <text x="148" y="128" text-anchor="middle" class="svg-label" style="fill:var(--night)">Look ahead</text>
+          <text x="148" y="148" text-anchor="middle" class="svg-small">in sessions</text>
+        </svg>
+        <figcaption><b>Look back:</b> what you bet on, what happened, and the gap. <b>Look at now:</b> what you really have, what you handed off, and whether this is still the right problem. <b>Look ahead:</b> your next bet and what you will watch.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 400 290" role="img" aria-labelledby="gap-title gap-desc">
+          <title id="gap-title">The gap</title>
+          <desc id="gap-desc">Two lines start at the moment you decided. One shows what you expected. The other shows what happened. The space between them is the gap.</desc>
+          <path d="M40 220 L360 70 L360 196 Q210 214 40 220 Z" style="fill:var(--gold-light);opacity:.45"/>
+          <path d="M40 220 L360 70" style="fill:none;stroke:var(--teal);stroke-width:3;stroke-dasharray:8 7"/>
+          <path d="M40 220 Q210 214 360 196" style="fill:none;stroke:var(--ink);stroke-width:3"/>
+          <circle cx="40" cy="220" r="6" style="fill:var(--ink)"/>
+          <path d="M372 70 L380 70 L380 196 L372 196" style="fill:none;stroke:var(--gold);stroke-width:2.5"/>
+          <text x="352" y="56" text-anchor="end" class="svg-label" style="fill:var(--teal)">What you expected</text>
+          <text x="352" y="186" text-anchor="end" class="svg-label">What happened</text>
+          <text x="300" y="142" text-anchor="middle" class="svg-center" style="fill:var(--fragile)">The gap</text>
+          <text x="40" y="250" class="svg-small">When you decided</text>
+          <text x="360" y="250" text-anchor="end" class="svg-small">Now</text>
+        </svg>
+        <figcaption>The gap between what you expected and what happened is not a failure. It is information. It shows you where to look.</figcaption>
+      </figure>
+    </div>
   </section>
 
   <section class="block" id="check" aria-labelledby="check-title">
@@ -309,7 +362,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 
       <div class="step" data-step="0">
         <h3>Which decision do you want to look at?</h3>
-        <p class="help">Write it in a few words. It can be about work, a tool, AI, money, or your life. For example: taking a new job, or letting AI answer customer emails.</p>
+        <p class="help">Write it in a few words. It can be about work, a tool, AI, money, or your life. For example: taking a new job, choosing a security control, hiring a contractor, or letting AI answer customer emails.</p>
         <label class="field" for="decision">The decision</label>
         <input type="text" id="decision" maxlength="200">
         <fieldset class="when">
@@ -331,6 +384,8 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
             <label class="choice"><input type="checkbox" value="ai"> An AI tool</label>
             <label class="choice"><input type="checkbox" value="tool"> Other software, a template, or a system</label>
             <label class="choice"><input type="checkbox" value="policy"> A policy, rule, or framework</label>
+            <label class="choice"><input type="checkbox" value="control"> A security control, scan, or checklist</label>
+            <label class="choice"><input type="checkbox" value="hired"> A person I hired, a contractor, or a vendor</label>
             <label class="choice"><input type="checkbox" value="people"> A friend, family member, or coworker</label>
             <label class="choice"><input type="checkbox" value="self"> My own experience</label>
           </div>
@@ -374,6 +429,10 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
       <ul class="result-list" id="r-signals"></ul>
       <p id="r-delegation" hidden class="quote">You can delegate a decision. You cannot delegate the fact that you chose to.</p>
       <p id="r-reasons"></p>
+      <div class="why-talk">
+        <h4>Why talk with Cheryl?</h4>
+        <p>It is hard to see a decision from inside it. In a 60-minute Clarity Session, you look at one decision with someone who is not inside it. You leave seeing something you could not see before, plus one next step for the week. If you keep going, the session fee counts toward the work you do together after.</p>
+      </div>
       <div class="actions">
         <button type="button" id="go-lookback">Take a short look back</button>
         <a class="button quiet" href="https://www.ypifany.org/start-a-conversation" id="talk-link">Start a conversation with Cheryl</a>
@@ -423,6 +482,11 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
         <h3>What a Clarity Session would look at next</h3>
         <p class="help">These are questions that are hard to answer alone, because the answers sit in the parts of a decision that are easy to miss from the inside.</p>
         <ol id="lb-questions"></ol>
+      </div>
+
+      <div class="why-talk">
+        <h4>Why talk with Cheryl?</h4>
+        <p>Bring these notes. It is hard to see a decision from inside it. In a 60-minute Clarity Session, you look at one decision with someone who is not inside it. You leave seeing something you could not see before, plus one next step for the week. If you keep going, the session fee counts toward the work you do together after.</p>
       </div>
 
       <div class="actions no-print">
@@ -644,7 +708,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 
     var helpers = checked("helpers");
     $("r-delegation").hidden = !helpers.some(function (h) {
-      return h === "ai" || h === "tool" || h === "policy" || h === "expert";
+      return h === "ai" || h === "tool" || h === "policy" || h === "expert" || h === "control" || h === "hired";
     });
 
     var reasonLabels = Array.prototype.map.call(
@@ -747,7 +811,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
       q.push("A feeling is real information. What was it telling you, and about what?");
     }
     var helpers = checked("helpers");
-    var named = { expert: "an expert, boss, or advisor", ai: "an AI tool", tool: "software, a template, or a system", policy: "a policy, rule, or framework", people: "people close to you" };
+    var named = { expert: "an expert, boss, or advisor", ai: "an AI tool", tool: "software, a template, or a system", policy: "a policy, rule, or framework", control: "a security control, scan, or checklist", hired: "a person you hired, a contractor, or a vendor", people: "people close to you" };
     var handed = helpers.filter(function (x) { return named[x]; }).map(function (x) { return named[x]; });
     if (handed.length) {
       q.push("You had help from " + handed.join(" and ") + ". What part of the decision did you hand to them, and what part stayed yours?");

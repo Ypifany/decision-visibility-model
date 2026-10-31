@@ -27,6 +27,8 @@ The result shows one of three clarity states:
 
 ### A short look back
 
+The page opens with why DVM matters, a picture of the loop, and a picture of the gap between what you expected and what happened.
+
 Three questions: what you were hoping for, what you were betting on, and what happened. You sort each thing that happened into a kind of information, including "not sure, or it is a mix."
 
 The page then shows up to four questions a Clarity Session would look at next, built from your answers. You can copy your notes to bring to a conversation with Cheryl, or print or save them as a PDF.
