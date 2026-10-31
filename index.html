@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decision Visibility Model</title>
+<meta name="description" content="Try the Decision Visibility Model from Ypifany. Check how well you can see one decision, then look back at it the way a DVM session does.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --night: #0b3b3c;
+  --teal: #0f6466;
+  --teal-soft: #d7ebea;
+  --gold: #b98a4b;
+  --gold-light: #e6c98f;
+  --paper: #f5f8f7;
+  --ink: #17282a;
+  --muted: #4a5d5f;
+  --line: #c9d9d8;
+  --functioning: #1f6f50;
+  --fragile: #9a6a1d;
+  --blind: #6b3c4a;
+  --radius-field: 6px;
+  --measure: 38rem;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.6 "Public Sans", system-ui, sans-serif;
+}
+h1, h2, h3 {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0;
+}
+a { color: var(--teal); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: #fff; padding: .5rem 1rem; z-index: 10; }
+
+/* Hero: a flashlight in a dark room */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--night);
+  color: #f2f6f5;
+  min-height: 34rem;
+  display: grid;
+  align-items: end;
+  --x: 70%;
+  --y: 40%;
+}
+.hidden-words {
+  position: absolute;
+  top: 0; bottom: 0; right: 0; left: 46%;
+  margin: 0;
+  padding: 3rem 2rem;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: .4rem 1.6rem;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.6vw, 1.7rem);
+  color: var(--gold-light);
+  -webkit-mask-image: radial-gradient(circle 11rem at var(--x) var(--y), #000 0, rgba(0,0,0,.55) 45%, rgba(0,0,0,.06) 100%);
+  mask-image: radial-gradient(circle 11rem at var(--x) var(--y), #000 0, rgba(0,0,0,.55) 45%, rgba(0,0,0,.06) 100%);
+  pointer-events: none;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 14rem at var(--x) var(--y), rgba(230,201,143,.13), transparent 70%);
+  pointer-events: none;
+}
+.hero-text {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 1rem 3.5rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  width: 100%;
+}
+.brand {
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--gold-light);
+  margin: 0 0 6rem;
+  font-size: .95rem;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  max-width: 13ch;
+  text-shadow: 0 2px 18px rgba(0,0,0,.6);
+}
+.hero p.lede {
+  max-width: 34rem;
+  margin: 1.25rem 0 0;
+  font-size: 1.15rem;
+  color: #d9e6e4;
+  text-shadow: 0 1px 10px rgba(0,0,0,.7);
+}
+.hero .hint { font-size: .85rem; color: #9fbdbb; margin-top: 1rem; }
+
+main { max-width: 64rem; margin: 0 auto; padding: 0 1rem 4rem; }
+section.block { padding: 3.5rem 0 1rem; }
+.block > h2 { font-size: clamp(2rem, 4.5vw, 2.8rem); color: var(--teal); max-width: 20ch; }
+.block > p.intro { max-width: var(--measure); color: var(--muted); }
+
+/* The loop, shown as the real sequence it is */
+.loop {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.loop li { border-top: 3px solid var(--teal); padding-top: .9rem; }
+.loop li:nth-child(2) { border-color: var(--gold); }
+.loop li:nth-child(3) { border-color: var(--night); }
+.loop h3 { font-size: 1.6rem; }
+.loop p { margin: .4rem 0 0; color: var(--muted); }
+.loop .where { font-size: .9rem; margin-top: .6rem; color: var(--ink); }
+
+/* Tool panels */
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  margin-top: 2rem;
+  max-width: 46rem;
+}
+.progress { font-size: .9rem; color: var(--muted); margin: 0 0 .75rem; }
+.step h3 { font-size: 1.9rem; color: var(--ink); max-width: 24ch; }
+.step p.help { color: var(--muted); max-width: var(--measure); margin: .6rem 0 1.2rem; }
+label.field { display: block; font-weight: 600; margin: 1rem 0 .35rem; }
+input[type=text], textarea, select {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid #a9c1bf;
+  border-radius: var(--radius-field);
+  padding: .65rem .75rem;
+}
+textarea { min-height: 6rem; resize: vertical; }
+fieldset { border: 0; margin: 0; padding: 0; }
+legend { font-weight: 600; margin-bottom: .5rem; }
+.choices { display: grid; gap: .5rem; }
+.choice {
+  display: flex;
+  gap: .7rem;
+  align-items: flex-start;
+  padding: .65rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-field);
+  cursor: pointer;
+}
+.choice:has(input:checked) { border-color: var(--teal); background: var(--teal-soft); }
+.choice input { margin-top: .3rem; accent-color: var(--teal); }
+.signal { border-left: 3px solid var(--line); padding: .25rem 0 .25rem 1rem; margin: 1.25rem 0; }
+.signal .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+button, .button {
+  font: 600 1rem "Public Sans", system-ui, sans-serif;
+  border-radius: 999px;
+  padding: .75rem 1.4rem;
+  border: 2px solid var(--teal);
+  background: var(--teal);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+button.quiet, .button.quiet { background: transparent; color: var(--teal); }
+button:hover, .button:hover { background: var(--night); border-color: var(--night); color: #fff; }
+.error { color: var(--blind); font-weight: 600; min-height: 1.6em; margin: .75rem 0 0; }
+
+/* Results */
+.state {
+  display: inline-block;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(3rem, 9vw, 4.6rem);
+  line-height: 1;
+  margin: .5rem 0 1rem;
+}
+.state.functioning { color: var(--functioning); }
+.state.fragile { color: var(--fragile); }
+.state.blind { color: var(--blind); }
+.result-list { padding-left: 1.1rem; }
+.result-list li { margin: .35rem 0; }
+.tag { font-weight: 600; }
+.quote {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: var(--teal);
+  border-left: 3px solid var(--gold);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  max-width: 30ch;
+}
+
+/* What happened sorter */
+.happened-row { display: grid; grid-template-columns: minmax(0, 1fr) 11rem; gap: .5rem; margin: .5rem 0; }
+.sort-key { margin: 1rem 0 0; padding: 0; list-style: none; display: grid; gap: .3rem; font-size: .95rem; color: var(--muted); }
+.sort-key b { color: var(--ink); }
+
+/* Summary page */
+.summary dl { margin: 1rem 0 0; }
+.summary dt { font-weight: 700; margin-top: 1rem; }
+.summary dd { margin: .2rem 0 0; white-space: pre-wrap; }
+.gap-table { width: 100%; border-collapse: collapse; margin-top: .5rem; }
+.gap-table th, .gap-table td { text-align: left; vertical-align: top; padding: .5rem; border-bottom: 1px solid var(--line); }
+
+.privacy { font-size: .92rem; color: var(--muted); max-width: var(--measure); margin-top: 1rem; }
+footer {
+  background: var(--night);
+  color: #c7d9d7;
+  padding: 2.5rem 1rem;
+  font-size: .92rem;
+}
+footer .inner { max-width: 64rem; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+footer a { color: var(--gold-light); }
+footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.4rem; color: #fff; }
+
+[hidden] { display: none !important; }
+.sr-legend, .sr-heading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .loop { grid-template-columns: 1fr; }
+  .signal .choices { grid-template-columns: 1fr; }
+  .happened-row { grid-template-columns: 1fr; }
+  .brand { margin-bottom: 17rem; }
+  .hidden-words { left: 0; top: 5.5rem; bottom: auto; height: 15rem; padding: 0 1rem; gap: .3rem 1rem; font-size: 1.05rem; }
+}
+@media print {
+  .hero, footer, .no-print, #check, #how { display: none !important; }
+  .panel { border: 0; padding: 0; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#check">Skip to the Clarity Check</a>
+
+<header class="hero" id="hero">
+  <ul class="hidden-words" aria-hidden="true">
+    <li>what we measure</li><li>whose expertise we trust</li><li>the vendor</li><li>the default setting</li>
+    <li>what the AI may access</li><li>which assumptions we stopped questioning</li><li>the threshold</li>
+    <li>what needs human review</li><li>the policy we signed</li><li>what deserves our attention</li>
+    <li>who owns it</li><li>what we were betting on</li><li>the recommendation we accepted</li>
+    <li>what we decided not to look at</li><li>the authority we gave the system</li><li>the data we approved</li>
+  </ul>
+  <div class="hero-text">
+    <p class="brand">Ypifany</p>
+    <h1>You already decided. Can you see the decision?</h1>
+    <p class="lede">Many of the decisions that shape an outcome happen long before the moment that looks like the decision. This page lets you check how well you can see one of yours.</p>
+    <p class="hint">The words behind this text are decisions people make before the big one. Move your pointer or finger to look around.</p>
+  </div>
+</header>
+
+<main>
+  <section class="block" id="how" aria-labelledby="how-title">
+    <h2 id="how-title">How the Decision Visibility Model works</h2>
+    <p class="intro">DVM does not grade a decision as right or wrong. It looks at the distance between what you expected and what reality is showing you. That distance is information, not failure. It moves in three steps, always about one decision at a time.</p>
+    <ol class="loop">
+      <li>
+        <h3>Look back</h3>
+        <p>What were you betting on, what happened, and where is the gap?</p>
+        <p class="where">You can try this below.</p>
+      </li>
+      <li>
+        <h3>Look at now</h3>
+        <p>What do you really have, what did you hand off, and is this still the right problem?</p>
+        <p class="where">Done together in sessions.</p>
+      </li>
+      <li>
+        <h3>Look ahead</h3>
+        <p>What is your new bet, what will you watch, and what will you do?</p>
+        <p class="where">Done together in sessions.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block" id="check" aria-labelledby="check-title">
+    <h2 id="check-title">The Clarity Check</h2>
+    <p class="intro">Four short questions about one decision. You will see whether you could notice it going off track in time to act.</p>
+
+    <div class="panel" id="check-panel">
+      <p class="progress" id="check-progress" aria-live="polite">Question 1 of 4</p>
+
+      <div class="step" data-step="0">
+        <h3>Which decision do you want to look at?</h3>
+        <p class="help">Pick one decision you made or need to make. It can be about work, a tool, AI, money, or your life. Most people start by asking whether they made the best decision. That is a fine place to start.</p>
+        <label class="field" for="decision">The decision, in a few words</label>
+        <input type="text" id="decision" maxlength="200" placeholder="For example: letting AI answer customer emails">
+      </div>
+
+      <div class="step" data-step="1" hidden>
+        <fieldset>
+          <legend><h3>Who or what helped you decide?</h3></legend>
+          <p class="help">Choose all that apply.</p>
+          <div class="choices" id="helpers">
+            <label class="choice"><input type="checkbox" value="expert"> An expert or advisor</label>
+            <label class="choice"><input type="checkbox" value="ai"> An AI tool</label>
+            <label class="choice"><input type="checkbox" value="tool"> Other software or a system</label>
+            <label class="choice"><input type="checkbox" value="policy"> A policy, rule, or framework</label>
+            <label class="choice"><input type="checkbox" value="people"> A friend, family member, or coworker</label>
+            <label class="choice"><input type="checkbox" value="self"> My own experience</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="step" data-step="2" hidden>
+        <fieldset>
+          <legend><h3>Why did you choose it?</h3></legend>
+          <p class="help">Most big decisions have more than one reason, and some are quiet ones. Choose all that apply.</p>
+          <div class="choices" id="reasons">
+            <label class="choice"><input type="checkbox" value="best option"> It looked like the best option</label>
+            <label class="choice"><input type="checkbox" value="trusted"> Someone or something I trust said to</label>
+            <label class="choice"><input type="checkbox" value="keeping up"> I did not want to fall behind</label>
+            <label class="choice"><input type="checkbox" value="looking unsure"> I did not want to look unsure</label>
+            <label class="choice"><input type="checkbox" value="avoiding trouble"> I wanted to avoid trouble</label>
+            <label class="choice"><input type="checkbox" value="finishing"> I wanted to finish what I started</label>
+            <label class="choice"><input type="checkbox" value="time"> I ran out of time to look further</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="step" data-step="3" hidden>
+        <h3>If this started to go off track, how would you know?</h3>
+        <p class="help">Name up to three things you would watch. For each one, choose how you would find out about a change. If you cannot think of any yet, leave them blank. That tells you something too.</p>
+        <div id="signals"></div>
+      </div>
+
+      <p class="error" id="check-error" role="alert"></p>
+      <div class="actions">
+        <button type="button" class="quiet" id="check-back" hidden>Back</button>
+        <button type="button" id="check-next">Next question</button>
+      </div>
+    </div>
+
+    <div class="panel" id="check-result" hidden tabindex="-1" aria-labelledby="result-title">
+      <h3 id="result-title" class="sr-heading">Your Clarity Check result</h3>
+      <p>Right now, your view of <strong id="r-decision"></strong> looks</p>
+      <p class="state" id="r-state"></p>
+      <p id="r-meaning"></p>
+      <ul class="result-list" id="r-signals"></ul>
+      <p id="r-delegation" hidden class="quote">You can delegate a decision. You cannot delegate the fact that you chose to.</p>
+      <p id="r-reasons"></p>
+      <div class="actions">
+        <button type="button" id="go-lookback">Look back at this decision</button>
+        <a class="button quiet" href="https://ypifany.org" id="talk-link">Start a conversation with Cheryl</a>
+        <button type="button" class="quiet" id="check-restart">Start over</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="lookback" hidden aria-labelledby="lookback-title">
+    <h2 id="lookback-title">Look back</h2>
+    <p class="intro">This is the first of the three steps, done on your own. Facts come before meaning, and nobody is grading this. Write as much or as little as you like.</p>
+
+    <div class="panel" id="lb-panel">
+      <p class="progress" id="lb-progress" aria-live="polite">Step 1 of 6</p>
+
+      <div class="lb-step" data-step="0">
+        <h3>What were you trying to create?</h3>
+        <p class="help">Before the tools and the plan, what situation did you want? If it worked out exactly the way you wanted, what would be different six months from now?</p>
+        <label class="field" for="lb-situation">The situation I wanted</label>
+        <textarea id="lb-situation"></textarea>
+      </div>
+
+      <div class="lb-step" data-step="1" hidden>
+        <h3>How were you looking at it?</h3>
+        <p class="help">Every situation has a frame, the story you use to explain what is going on. The frame decides what looks important. What did you believe the problem was? What were your tools and people being used for?</p>
+        <label class="field" for="lb-frame">What I believed the problem was</label>
+        <textarea id="lb-frame"></textarea>
+        <label class="field" for="lb-tools">What my tools and people were being used for</label>
+        <textarea id="lb-tools"></textarea>
+      </div>
+
+      <div class="lb-step" data-step="2" hidden>
+        <h3>What were you betting on?</h3>
+        <p class="help">A bet is not an accusation. It is simply what you acted as though would happen. Finish the sentence as many times as you need to.</p>
+        <label class="field" for="lb-bet">I acted as though…</label>
+        <textarea id="lb-bet"></textarea>
+      </div>
+
+      <div class="lb-step" data-step="3" hidden>
+        <h3>What actually happened?</h3>
+        <p class="help">Keep this part plain. Write what you could point to, then sort each one. None of these kinds of information is bad. The risk is mistaking one for another.</p>
+        <div id="happened"></div>
+        <button type="button" class="quiet" id="add-happened">Add another thing that happened</button>
+        <ul class="sort-key">
+          <li><b>Fact:</b> Can you point to it, like a number, a date, or an event?</li>
+          <li><b>Opinion:</b> Whose judgment is this, and what did they see?</li>
+          <li><b>Assumption:</b> Are you treating this as true without checking?</li>
+          <li><b>Belief:</b> Do you hold this no matter what happens?</li>
+          <li><b>Feeling:</b> What is your gut telling you, and about what?</li>
+        </ul>
+      </div>
+
+      <div class="lb-step" data-step="4" hidden>
+        <h3>Where is the gap?</h3>
+        <p class="help">The gap is the distance between what you expected and what you saw. It does not tell you what to change. It tells you where to look. Notice anything that matched, too.</p>
+        <label class="field" for="lb-expected">I expected</label>
+        <textarea id="lb-expected"></textarea>
+        <label class="field" for="lb-observed">I observed</label>
+        <textarea id="lb-observed"></textarea>
+      </div>
+
+      <div class="lb-step" data-step="5" hidden>
+        <h3>What can you see now?</h3>
+        <p class="help">What can you see now that you could not see when you started this page? Then name one thing you will do in the next seven days.</p>
+        <label class="field" for="lb-see">What I can see now</label>
+        <textarea id="lb-see"></textarea>
+        <label class="field" for="lb-next">One thing I will do in the next 7 days</label>
+        <input type="text" id="lb-next" maxlength="200">
+      </div>
+
+      <div class="actions">
+        <button type="button" class="quiet" id="lb-back" hidden>Back</button>
+        <button type="button" id="lb-next-btn">Next step</button>
+      </div>
+    </div>
+
+    <div class="panel summary" id="lb-summary" hidden tabindex="-1">
+      <h3 class="no-print-heading">Your look back</h3>
+      <dl id="lb-out"></dl>
+      <p class="quote">Two more steps come next: looking at what you really have, and setting your next bet with signals you can watch.</p>
+      <div class="actions no-print">
+        <button type="button" id="print">Print or save as PDF</button>
+        <a class="button quiet" href="https://ypifany.org">Start a conversation with Cheryl</a>
+        <button type="button" class="quiet" id="lb-edit">Change my answers</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="privacy">Your answers stay in this browser tab. Nothing is sent, saved, or shared, and everything clears when you close or reload the page. Please do not enter passwords or private information about other people.</p>
+</main>
+
+<footer>
+  <div class="inner">
+    <div>
+      <p class="tagline">Freedom to Be Secure</p>
+      <p>The Decision Visibility Model is created by Cheryl Abram, Ypifany LLC.</p>
+    </div>
+    <div>
+      <p><a href="https://ypifany.org">ypifany.org</a></p>
+      <p>© 2026 Cheryl Abram / Ypifany. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Flashlight */
+  var hero = document.getElementById("hero");
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function aim(clientX, clientY) {
+    var r = hero.getBoundingClientRect();
+    hero.style.setProperty("--x", ((clientX - r.left) / r.width * 100).toFixed(1) + "%");
+    hero.style.setProperty("--y", ((clientY - r.top) / r.height * 100).toFixed(1) + "%");
+  }
+  hero.addEventListener("pointermove", function (e) { aim(e.clientX, e.clientY); });
+  hero.addEventListener("touchmove", function (e) {
+    if (e.touches[0]) aim(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  if (!still) {
+    var t0 = null, sweeping = true;
+    hero.addEventListener("pointermove", function () { sweeping = false; }, { once: true });
+    function sweep(ts) {
+      if (!sweeping) return;
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / 3200, 1);
+      hero.style.setProperty("--x", (15 + 60 * p).toFixed(1) + "%");
+      hero.style.setProperty("--y", (30 + 20 * Math.sin(p * Math.PI)).toFixed(1) + "%");
+      if (p < 1) requestAnimationFrame(sweep);
+    }
+    requestAnimationFrame(sweep);
+  }
+
+  function $(id) { return document.getElementById(id); }
+  function checked(containerId) {
+    return Array.prototype.map.call(
+      document.querySelectorAll("#" + containerId + " input:checked"),
+      function (i) { return i.value; });
+  }
+  function textOf(label) { return label.textContent.trim(); }
+
+  /* Clarity Check */
+  var STATES = {
+    functioning: { word: "Functioning", meaning: "You are tracking what matters and writing it down. If something shifts, you would likely see it in time to act." },
+    fragile: { word: "Fragile", meaning: "You are relying on a feeling or on someone else to tell you. You might see a shift, but maybe too late." },
+    blind: { word: "Blind", meaning: "You have no way to know yet. You would find out when something goes wrong. That is not a failure. It shows you where to build better sight." }
+  };
+  var signalsBox = $("signals");
+  for (var s = 1; s <= 3; s++) {
+    var div = document.createElement("div");
+    div.className = "signal";
+    div.innerHTML =
+      '<label class="field" for="sig' + s + '">Thing to watch ' + s + '</label>' +
+      '<input type="text" id="sig' + s + '" maxlength="120" placeholder="' +
+        ["For example: customer complaints", "For example: time I spend fixing its work", "For example: cost each month"][s - 1] + '">' +
+      '<fieldset><legend class="sr-legend">How would you find out about a change in thing ' + s + '?</legend>' +
+      '<div class="choices">' +
+        '<label class="choice"><input type="radio" name="how' + s + '" value="functioning"> I track it and write it down</label>' +
+        '<label class="choice"><input type="radio" name="how' + s + '" value="fragile"> A feeling, or someone would tell me</label>' +
+        '<label class="choice"><input type="radio" name="how' + s + '" value="blind"> I would find out when something goes wrong</label>' +
+      '</div></fieldset>';
+    signalsBox.appendChild(div);
+  }
+
+  var steps = document.querySelectorAll("#check-panel .step");
+  var at = 0;
+  function show(i) {
+    steps.forEach(function (el, n) { el.hidden = n !== i; });
+    at = i;
+    $("check-progress").textContent = "Question " + (i + 1) + " of " + steps.length;
+    $("check-back").hidden = i === 0;
+    $("check-next").textContent = i === steps.length - 1 ? "See my result" : "Next question";
+    $("check-error").textContent = "";
+    var first = steps[i].querySelector("input");
+    if (first && i > 0) first.focus();
+  }
+  function readSignals() {
+    var out = [];
+    for (var n = 1; n <= 3; n++) {
+      var name = $("sig" + n).value.trim();
+      var how = document.querySelector('input[name="how' + n + '"]:checked');
+      if (name || how) out.push({ name: name, how: how ? how.value : null });
+    }
+    return out;
+  }
+  $("check-next").addEventListener("click", function () {
+    var err = "";
+    if (at === 0 && !$("decision").value.trim()) err = "Write the decision in a few words to continue.";
+    if (at === 3) {
+      readSignals().forEach(function (sg) {
+        if (sg.name && !sg.how) err = "Choose how you would find out about a change in “" + sg.name + "”.";
+        if (!sg.name && sg.how) err = "Name the thing you would watch, or clear its answer.";
+      });
+    }
+    if (err) { $("check-error").textContent = err; return; }
+    if (at < steps.length - 1) { show(at + 1); return; }
+    showResult();
+  });
+  $("check-back").addEventListener("click", function () { show(at - 1); });
+
+  function showResult() {
+    var sigs = readSignals();
+    var state = "functioning";
+    if (!sigs.length) state = "blind";
+    sigs.forEach(function (sg) {
+      if (sg.how === "blind") state = "blind";
+      else if (sg.how === "fragile" && state !== "blind") state = "fragile";
+    });
+    $("r-decision").textContent = $("decision").value.trim();
+    var st = $("r-state");
+    st.textContent = STATES[state].word;
+    st.className = "state " + state;
+    $("r-meaning").textContent = STATES[state].meaning;
+
+    var list = $("r-signals");
+    list.innerHTML = "";
+    if (!sigs.length) {
+      var li = document.createElement("li");
+      li.textContent = "You did not name anything to watch yet. Naming one or two things is the first way to build sight.";
+      list.appendChild(li);
+    }
+    sigs.forEach(function (sg) {
+      var li = document.createElement("li");
+      var tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = STATES[sg.how].word + ": ";
+      li.appendChild(tag);
+      li.appendChild(document.createTextNode(sg.name));
+      list.appendChild(li);
+    });
+
+    var helpers = checked("helpers");
+    $("r-delegation").hidden = !helpers.some(function (h) {
+      return h === "ai" || h === "tool" || h === "policy" || h === "expert";
+    });
+
+    var reasonLabels = Array.prototype.map.call(
+      document.querySelectorAll("#reasons input:checked"),
+      function (i) { return "\u201c" + textOf(i.parentNode) + "\u201d"; });
+    $("r-reasons").textContent = reasonLabels.length
+      ? "Your reasons: " + reasonLabels.join(", ") + ". In a session, the reasons behind a choice are often where people see something new."
+      : "";
+
+    $("check-panel").hidden = true;
+    $("check-result").hidden = false;
+    $("check-result").focus();
+  }
+  $("check-restart").addEventListener("click", function () {
+    document.querySelectorAll("#check-panel input").forEach(function (i) {
+      if (i.type === "text") i.value = ""; else i.checked = false;
+    });
+    $("check-result").hidden = true;
+    $("check-panel").hidden = false;
+    show(0);
+    $("decision").focus();
+  });
+
+  /* Look back */
+  var KINDS = ["Fact", "Opinion", "Assumption", "Belief", "Feeling"];
+  var happenedCount = 0;
+  function addHappened() {
+    happenedCount++;
+    var row = document.createElement("div");
+    row.className = "happened-row";
+    var n = happenedCount;
+    var opts = '<option value="">Sort it</option>' + KINDS.map(function (k) {
+      return '<option>' + k + '</option>';
+    }).join("");
+    row.innerHTML =
+      '<div><label class="field" for="hp' + n + '">Something that happened</label>' +
+      '<input type="text" id="hp' + n + '" maxlength="240"></div>' +
+      '<div><label class="field" for="hk' + n + '">What kind is it?</label>' +
+      '<select id="hk' + n + '">' + opts + '</select></div>';
+    $("happened").appendChild(row);
+    return row;
+  }
+  addHappened(); addHappened();
+  $("add-happened").addEventListener("click", function () {
+    addHappened().querySelector("input").focus();
+  });
+
+  var lbSteps = document.querySelectorAll("#lb-panel .lb-step");
+  var lbAt = 0;
+  function lbShow(i) {
+    lbSteps.forEach(function (el, n) { el.hidden = n !== i; });
+    lbAt = i;
+    $("lb-progress").textContent = "Step " + (i + 1) + " of " + lbSteps.length;
+    $("lb-back").hidden = i === 0;
+    $("lb-next-btn").textContent = i === lbSteps.length - 1 ? "See my look back" : "Next step";
+    var first = lbSteps[i].querySelector("textarea, input");
+    if (first) first.focus();
+  }
+  $("go-lookback").addEventListener("click", function () {
+    $("lookback").hidden = false;
+    $("lookback").scrollIntoView({ behavior: still ? "auto" : "smooth" });
+    lbShow(0);
+  });
+  $("lb-back").addEventListener("click", function () { lbShow(lbAt - 1); });
+  $("lb-next-btn").addEventListener("click", function () {
+    if (lbAt < lbSteps.length - 1) { lbShow(lbAt + 1); return; }
+    buildSummary();
+  });
+  $("lb-edit").addEventListener("click", function () {
+    $("lb-summary").hidden = true;
+    $("lb-panel").hidden = false;
+    lbShow(0);
+  });
+  $("print").addEventListener("click", function () { window.print(); });
+
+  function addPair(dl, term, value) {
+    if (!value) return;
+    var dt = document.createElement("dt"); dt.textContent = term;
+    var dd = document.createElement("dd"); dd.textContent = value;
+    dl.appendChild(dt); dl.appendChild(dd);
+  }
+  function buildSummary() {
+    var dl = $("lb-out");
+    dl.innerHTML = "";
+    var v = function (id) { return $(id).value.trim(); };
+    addPair(dl, "The decision", v("decision"));
+    addPair(dl, "What I was trying to create", v("lb-situation"));
+    addPair(dl, "What I believed the problem was", v("lb-frame"));
+    addPair(dl, "What my tools and people were used for", v("lb-tools"));
+    addPair(dl, "What I was betting on", v("lb-bet"));
+
+    var rows = Array.prototype.map.call(document.querySelectorAll(".happened-row"), function (r) {
+      var t = r.querySelector("input").value.trim();
+      var k = r.querySelector("select").value;
+      return t ? (k ? k + ": " : "") + t : "";
+    }).filter(Boolean);
+    addPair(dl, "What happened", rows.join("\n"));
+
+    if (v("lb-expected") || v("lb-observed")) {
+      var dt = document.createElement("dt"); dt.textContent = "The gap";
+      var dd = document.createElement("dd");
+      var table = document.createElement("table");
+      table.className = "gap-table";
+      var head = table.insertRow();
+      ["I expected", "I observed"].forEach(function (h) {
+        var th = document.createElement("th"); th.scope = "col"; th.textContent = h; head.appendChild(th);
+      });
+      var body = table.insertRow();
+      [v("lb-expected"), v("lb-observed")].forEach(function (c) { body.insertCell().textContent = c; });
+      dd.appendChild(table);
+      dl.appendChild(dt); dl.appendChild(dd);
+    }
+    addPair(dl, "What I can see now", v("lb-see"));
+    addPair(dl, "My next step this week", v("lb-next"));
+
+    $("lb-panel").hidden = true;
+    $("lb-summary").hidden = false;
+    $("lb-summary").focus();
+  }
+})();
+</script>
+</body>
+</html>
