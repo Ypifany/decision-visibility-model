@@ -25,11 +25,15 @@ The result shows one of three clarity states:
 | Fragile | You are relying on a feeling or on someone else to tell you. You might see a shift, but maybe too late. |
 | Blind | You have no way to know yet. You would find out when something goes wrong. |
 
-### Look back
+### A short look back
 
-A self-guided version of the first of DVM's three steps. You name the situation you wanted, the frame you were using, what you were betting on, what happened, and where the gap is. You can print or save your look back as a PDF.
+Three questions: what you were hoping for, what you were betting on, and what happened. You sort each thing that happened into a kind of information, including "not sure, or it is a mix."
 
-The other two steps, **look at now** and **look ahead**, happen in a Clarity Session and the three-session engagement with Cheryl.
+The page then shows up to four questions a Clarity Session would look at next, built from your answers. You can copy your notes to bring to a conversation with Cheryl, or print or save them as a PDF.
+
+The Clarity Check and the look back change their wording for decisions that are behind you, still playing out, or not made yet.
+
+The rest of the work, looking at what you really have and setting your next bet, happens in a Clarity Session and the three-session engagement with Cheryl.
 
 ## Privacy
 

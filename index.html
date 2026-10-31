@@ -213,7 +213,14 @@ button:hover, .button:hover { background: var(--night); border-color: var(--nigh
 }
 
 /* What happened sorter */
-.happened-row { display: grid; grid-template-columns: minmax(0, 1fr) 11rem; gap: .5rem; margin: .5rem 0; }
+.happened-row { border-left: 3px solid var(--line); padding: .25rem 0 .25rem 1rem; margin: 1.25rem 0; }
+.when { margin-top: 1.5rem; }
+.next-look { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--gold); }
+.next-look h3 { font-size: 1.7rem; color: var(--teal); }
+.next-look ol { padding-left: 1.3rem; }
+.next-look li { margin: .6rem 0; max-width: var(--measure); }
+.copy-status { color: var(--teal); font-weight: 600; min-height: 1.6em; }
+.summary > h3 { font-size: 1.7rem; }
 .sort-key { margin: 1rem 0 0; padding: 0; list-style: none; display: grid; gap: .3rem; font-size: .95rem; color: var(--muted); }
 .sort-key b { color: var(--ink); }
 
@@ -241,7 +248,6 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 @media (max-width: 720px) {
   .loop { grid-template-columns: 1fr; }
   .signal .choices { grid-template-columns: 1fr; }
-  .happened-row { grid-template-columns: 1fr; }
   .brand { margin-bottom: 17rem; }
   .hidden-words { left: 0; top: 5.5rem; bottom: auto; height: 15rem; padding: 0 1rem; gap: .3rem 1rem; font-size: 1.05rem; }
 }
@@ -296,16 +302,24 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 
   <section class="block" id="check" aria-labelledby="check-title">
     <h2 id="check-title">The Clarity Check</h2>
-    <p class="intro">Four short questions about one decision. You will see whether you could notice it going off track in time to act.</p>
+    <p class="intro">Four short questions about one decision. You can pick one that is behind you, one that is still playing out, or one you have not made yet.</p>
 
     <div class="panel" id="check-panel">
       <p class="progress" id="check-progress" aria-live="polite">Question 1 of 4</p>
 
       <div class="step" data-step="0">
         <h3>Which decision do you want to look at?</h3>
-        <p class="help">Pick one decision you made or need to make. It can be about work, a tool, AI, money, or your life. Most people start by asking whether they made the best decision. That is a fine place to start.</p>
-        <label class="field" for="decision">The decision, in a few words</label>
-        <input type="text" id="decision" maxlength="200" placeholder="For example: letting AI answer customer emails">
+        <p class="help">Write it in a few words. It can be about work, a tool, AI, money, or your life. For example: taking a new job, or letting AI answer customer emails.</p>
+        <label class="field" for="decision">The decision</label>
+        <input type="text" id="decision" maxlength="200">
+        <fieldset class="when">
+          <legend>Where is this decision now?</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="when" value="past"> It is behind me, and I know how it turned out</label>
+            <label class="choice"><input type="radio" name="when" value="now"> I made it, and it is still playing out</label>
+            <label class="choice"><input type="radio" name="when" value="soon"> I have not made it yet</label>
+          </div>
+        </fieldset>
       </div>
 
       <div class="step" data-step="1" hidden>
@@ -313,9 +327,9 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
           <legend><h3>Who or what helped you decide?</h3></legend>
           <p class="help">Choose all that apply.</p>
           <div class="choices" id="helpers">
-            <label class="choice"><input type="checkbox" value="expert"> An expert or advisor</label>
+            <label class="choice"><input type="checkbox" value="expert"> An expert, a boss, or an advisor</label>
             <label class="choice"><input type="checkbox" value="ai"> An AI tool</label>
-            <label class="choice"><input type="checkbox" value="tool"> Other software or a system</label>
+            <label class="choice"><input type="checkbox" value="tool"> Other software, a template, or a system</label>
             <label class="choice"><input type="checkbox" value="policy"> A policy, rule, or framework</label>
             <label class="choice"><input type="checkbox" value="people"> A friend, family member, or coworker</label>
             <label class="choice"><input type="checkbox" value="self"> My own experience</label>
@@ -340,8 +354,8 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
       </div>
 
       <div class="step" data-step="3" hidden>
-        <h3>If this started to go off track, how would you know?</h3>
-        <p class="help">Name up to three things you would watch. For each one, choose how you would find out about a change. If you cannot think of any yet, leave them blank. That tells you something too.</p>
+        <h3 id="q4-title">If this started to go off track, how would you know?</h3>
+        <p class="help" id="q4-help"></p>
         <div id="signals"></div>
       </div>
 
@@ -354,14 +368,14 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 
     <div class="panel" id="check-result" hidden tabindex="-1" aria-labelledby="result-title">
       <h3 id="result-title" class="sr-heading">Your Clarity Check result</h3>
-      <p>Right now, your view of <strong id="r-decision"></strong> looks</p>
+      <p id="r-lead"></p>
       <p class="state" id="r-state"></p>
       <p id="r-meaning"></p>
       <ul class="result-list" id="r-signals"></ul>
       <p id="r-delegation" hidden class="quote">You can delegate a decision. You cannot delegate the fact that you chose to.</p>
       <p id="r-reasons"></p>
       <div class="actions">
-        <button type="button" id="go-lookback">Look back at this decision</button>
+        <button type="button" id="go-lookback">Take a short look back</button>
         <a class="button quiet" href="https://www.ypifany.org/start-a-conversation" id="talk-link">Start a conversation with Cheryl</a>
         <button type="button" class="quiet" id="check-restart">Start over</button>
       </div>
@@ -369,85 +383,57 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   </section>
 
   <section class="block" id="lookback" hidden aria-labelledby="lookback-title">
-    <h2 id="lookback-title">Look back</h2>
-    <p class="intro">This is the first of the three steps, done on your own. Facts come before meaning, and nobody is grading this. Write as much or as little as you like.</p>
+    <h2 id="lookback-title">A short look back</h2>
+    <p class="intro">Three questions, done on your own. Short answers are fine. Nobody is grading this.</p>
 
     <div class="panel" id="lb-panel">
-      <p class="progress" id="lb-progress" aria-live="polite">Step 1 of 6</p>
+      <p class="progress" id="lb-progress" aria-live="polite">Question 1 of 3</p>
 
       <div class="lb-step" data-step="0">
-        <h3>What were you trying to create?</h3>
-        <p class="help">Before the tools and the plan, what situation did you want? If it worked out exactly the way you wanted, what would be different six months from now?</p>
-        <label class="field" for="lb-situation">The situation I wanted</label>
-        <textarea id="lb-situation"></textarea>
+        <h3 id="lb0-title">What were you hoping this decision would do?</h3>
+        <p class="help">Think about the situation you wanted, not the plan. If it worked out exactly the way you wanted, what would be different?</p>
+        <label class="field" for="lb-hope">What I was hoping for</label>
+        <textarea id="lb-hope"></textarea>
       </div>
 
       <div class="lb-step" data-step="1" hidden>
-        <h3>How were you looking at it?</h3>
-        <p class="help">Every situation has a frame, the story you use to explain what is going on. The frame decides what looks important. What did you believe the problem was? What were your tools and people being used for?</p>
-        <label class="field" for="lb-frame">What I believed the problem was</label>
-        <textarea id="lb-frame"></textarea>
-        <label class="field" for="lb-tools">What my tools and people were being used for</label>
-        <textarea id="lb-tools"></textarea>
-      </div>
-
-      <div class="lb-step" data-step="2" hidden>
         <h3>What were you betting on?</h3>
-        <p class="help">A bet is not an accusation. It is simply what you acted as though would happen. Finish the sentence as many times as you need to.</p>
-        <label class="field" for="lb-bet">I acted as though…</label>
+        <p class="help">A bet is not an accusation. It is what you acted as though would happen. For example: "I acted as though my reviews were being checked the same way I checked them."</p>
+        <label class="field" for="lb-bet">I acted as though</label>
         <textarea id="lb-bet"></textarea>
       </div>
 
-      <div class="lb-step" data-step="3" hidden>
-        <h3>What actually happened?</h3>
-        <p class="help">Keep this part plain. Write what you could point to, then sort each one. None of these kinds of information is bad. The risk is mistaking one for another.</p>
+      <div class="lb-step" data-step="2" hidden>
+        <h3 id="lb2-title">What happened?</h3>
+        <p class="help">Write up to three things. Then choose what kind of information each one is. If you are not sure, say so. Many things that happen are a fact and someone's judgment mixed together.</p>
         <div id="happened"></div>
-        <button type="button" class="quiet" id="add-happened">Add another thing that happened</button>
-        <ul class="sort-key">
-          <li><b>Fact:</b> Can you point to it, like a number, a date, or an event?</li>
-          <li><b>Opinion:</b> Whose judgment is this, and what did they see?</li>
-          <li><b>Assumption:</b> Are you treating this as true without checking?</li>
-          <li><b>Belief:</b> Do you hold this no matter what happens?</li>
-          <li><b>Feeling:</b> What is your gut telling you, and about what?</li>
-        </ul>
-      </div>
-
-      <div class="lb-step" data-step="4" hidden>
-        <h3>Where is the gap?</h3>
-        <p class="help">The gap is the distance between what you expected and what you saw. It does not tell you what to change. It tells you where to look. Notice anything that matched, too.</p>
-        <label class="field" for="lb-expected">I expected</label>
-        <textarea id="lb-expected"></textarea>
-        <label class="field" for="lb-observed">I observed</label>
-        <textarea id="lb-observed"></textarea>
-      </div>
-
-      <div class="lb-step" data-step="5" hidden>
-        <h3>What can you see now?</h3>
-        <p class="help">What can you see now that you could not see when you started this page? Then name one thing you will do in the next seven days.</p>
-        <label class="field" for="lb-see">What I can see now</label>
-        <textarea id="lb-see"></textarea>
-        <label class="field" for="lb-next">One thing I will do in the next 7 days</label>
-        <input type="text" id="lb-next" maxlength="200">
       </div>
 
       <div class="actions">
         <button type="button" class="quiet" id="lb-back" hidden>Back</button>
-        <button type="button" id="lb-next-btn">Next step</button>
+        <button type="button" id="lb-next-btn">Next question</button>
       </div>
     </div>
 
     <div class="panel summary" id="lb-summary" hidden tabindex="-1">
-      <h3 class="no-print-heading">Your look back</h3>
+      <h3>Your look back</h3>
       <dl id="lb-out"></dl>
-      <p class="quote">Two more steps come next: looking at what you really have, and setting your next bet with signals you can watch.</p>
+
+      <div class="next-look">
+        <h3>What a Clarity Session would look at next</h3>
+        <p class="help">These are questions that are hard to answer alone, because the answers sit in the parts of a decision that are easy to miss from the inside.</p>
+        <ol id="lb-questions"></ol>
+      </div>
+
       <div class="actions no-print">
-        <button type="button" id="print">Print or save as PDF</button>
-        <a class="button quiet" href="https://www.ypifany.org/start-a-conversation">Start a conversation with Cheryl</a>
+        <a class="button" href="https://www.ypifany.org/start-a-conversation">Start a conversation with Cheryl</a>
+        <button type="button" class="quiet" id="copy-notes">Copy my notes</button>
+        <button type="button" class="quiet" id="print">Print or save as PDF</button>
         <button type="button" class="quiet" id="lb-edit">Change my answers</button>
       </div>
+      <p class="copy-status" id="copy-status" role="status"></p>
     </div>
   </section>
-
   <p class="privacy">Your answers stay in this browser tab. Nothing is sent, saved, or shared, and everything clears when you close or reload the page. Please do not enter passwords or private information about other people.</p>
 </main>
 
@@ -483,14 +469,14 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   if (!still) {
     var t0 = null, sweeping = true;
     hero.addEventListener("pointermove", function () { sweeping = false; }, { once: true });
-    function sweep(ts) {
+    var sweep = function (ts) {
       if (!sweeping) return;
       if (t0 === null) t0 = ts;
       var p = Math.min((ts - t0) / 3200, 1);
       hero.style.setProperty("--x", (15 + 60 * p).toFixed(1) + "%");
       hero.style.setProperty("--y", (30 + 20 * Math.sin(p * Math.PI)).toFixed(1) + "%");
       if (p < 1) requestAnimationFrame(sweep);
-    }
+    };
     requestAnimationFrame(sweep);
   }
 
@@ -500,29 +486,76 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
       document.querySelectorAll("#" + containerId + " input:checked"),
       function (i) { return i.value; });
   }
-  function textOf(label) { return label.textContent.trim(); }
+  function labelOf(input) { return input.parentNode.textContent.trim(); }
+  function when() {
+    var w = document.querySelector('input[name="when"]:checked');
+    return w ? w.value : null;
+  }
+
+  /* Wording that changes with where the decision is in time */
+  var TIME = {
+    past: {
+      q4: "Looking back, could you have seen it coming?",
+      help: "Name up to three signs that showed up before the outcome, like a number, a comment, or a complaint. For each one, choose how you found out about it. If nothing comes to mind, leave them blank. That tells you something too.",
+      examples: ["Feedback on my work", "How much came back for fixes", "What my manager said"],
+      how: ["I was tracking it and writing it down", "I had a feeling, or someone told me", "I found out when it went wrong"],
+      lead: "Back then, your view of",
+      verb: "was",
+      states: {
+        functioning: "You were tracking what mattered and writing it down. You could have seen a shift in time to act.",
+        fragile: "You were relying on a feeling or on someone else to tell you. You might have seen a shift, but maybe too late.",
+        blind: "You had no way to know yet. You found out when something went wrong. That is not a failure. It shows where to build better sight next time."
+      },
+      hope: "What were you hoping this decision would do?"
+    },
+    now: {
+      q4: "If this started to go off track, how would you know?",
+      help: "Name up to three things you would watch, like a number, a comment, or a complaint. For each one, choose how you would find out about a change. If nothing comes to mind, leave them blank. That tells you something too.",
+      examples: ["Customer complaints", "Time I spend fixing things", "Cost each month"],
+      how: ["I track it and write it down", "A feeling, or someone would tell me", "I would find out when something goes wrong"],
+      lead: "Right now, your view of",
+      verb: "looks",
+      states: {
+        functioning: "You are tracking what matters and writing it down. If something shifts, you would likely see it in time to act.",
+        fragile: "You are relying on a feeling or on someone else to tell you. You might see a shift, but maybe too late.",
+        blind: "You have no way to know yet. You would find out when something goes wrong. That is not a failure. It shows you where to build better sight."
+      },
+      hope: "What are you hoping this decision will do?"
+    }
+  };
+  TIME.soon = Object.assign({}, TIME.now, {
+    q4: "Once you decide, how would you know if it started to go off track?",
+    lead: "Before you decide, your view of"
+  });
+  function words() { return TIME[when() || "now"]; }
 
   /* Clarity Check */
-  var STATES = {
-    functioning: { word: "Functioning", meaning: "You are tracking what matters and writing it down. If something shifts, you would likely see it in time to act." },
-    fragile: { word: "Fragile", meaning: "You are relying on a feeling or on someone else to tell you. You might see a shift, but maybe too late." },
-    blind: { word: "Blind", meaning: "You have no way to know yet. You would find out when something goes wrong. That is not a failure. It shows you where to build better sight." }
-  };
+  var STATE_WORD = { functioning: "Functioning", fragile: "Fragile", blind: "Blind" };
   var signalsBox = $("signals");
   for (var s = 1; s <= 3; s++) {
     var div = document.createElement("div");
     div.className = "signal";
     div.innerHTML =
-      '<label class="field" for="sig' + s + '">Thing to watch ' + s + '</label>' +
-      '<input type="text" id="sig' + s + '" maxlength="120" placeholder="' +
-        ["For example: customer complaints", "For example: time I spend fixing its work", "For example: cost each month"][s - 1] + '">' +
-      '<fieldset><legend class="sr-legend">How would you find out about a change in thing ' + s + '?</legend>' +
+      '<label class="field" for="sig' + s + '" id="sig' + s + '-label">Sign ' + s + '</label>' +
+      '<input type="text" id="sig' + s + '" maxlength="120">' +
+      '<fieldset><legend class="sr-legend">How did you find out about sign ' + s + '?</legend>' +
       '<div class="choices">' +
-        '<label class="choice"><input type="radio" name="how' + s + '" value="functioning"> I track it and write it down</label>' +
-        '<label class="choice"><input type="radio" name="how' + s + '" value="fragile"> A feeling, or someone would tell me</label>' +
-        '<label class="choice"><input type="radio" name="how' + s + '" value="blind"> I would find out when something goes wrong</label>' +
+        '<label class="choice"><input type="radio" name="how' + s + '" value="functioning"> <span data-how="0"></span></label>' +
+        '<label class="choice"><input type="radio" name="how' + s + '" value="fragile"> <span data-how="1"></span></label>' +
+        '<label class="choice"><input type="radio" name="how' + s + '" value="blind"> <span data-how="2"></span></label>' +
       '</div></fieldset>';
     signalsBox.appendChild(div);
+  }
+  function fillQuestion4() {
+    var w = words();
+    $("q4-title").textContent = w.q4;
+    $("q4-help").textContent = w.help + " Examples: " + w.examples.join(", ").toLowerCase() + ".";
+    document.querySelectorAll("[data-how]").forEach(function (span) {
+      span.textContent = w.how[Number(span.getAttribute("data-how"))];
+    });
+    for (var n = 1; n <= 3; n++) {
+      $("sig" + n + "-label").textContent = (when() === "past" ? "Sign " : "Thing to watch ") + n;
+    }
   }
 
   var steps = document.querySelectorAll("#check-panel .step");
@@ -530,6 +563,7 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   function show(i) {
     steps.forEach(function (el, n) { el.hidden = n !== i; });
     at = i;
+    if (i === 3) fillQuestion4();
     $("check-progress").textContent = "Question " + (i + 1) + " of " + steps.length;
     $("check-back").hidden = i === 0;
     $("check-next").textContent = i === steps.length - 1 ? "See my result" : "Next question";
@@ -549,10 +583,11 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   $("check-next").addEventListener("click", function () {
     var err = "";
     if (at === 0 && !$("decision").value.trim()) err = "Write the decision in a few words to continue.";
+    else if (at === 0 && !when()) err = "Choose where this decision is now.";
     if (at === 3) {
       readSignals().forEach(function (sg) {
-        if (sg.name && !sg.how) err = "Choose how you would find out about a change in “" + sg.name + "”.";
-        if (!sg.name && sg.how) err = "Name the thing you would watch, or clear its answer.";
+        if (sg.name && !sg.how) err = "Choose how you found out about “" + sg.name + "”.";
+        if (!sg.name && sg.how) err = "Write the sign, or clear its answer.";
       });
     }
     if (err) { $("check-error").textContent = err; return; }
@@ -561,32 +596,47 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   });
   $("check-back").addEventListener("click", function () { show(at - 1); });
 
-  function showResult() {
+  function overallState() {
     var sigs = readSignals();
-    var state = "functioning";
-    if (!sigs.length) state = "blind";
+    var state = sigs.length ? "functioning" : "blind";
     sigs.forEach(function (sg) {
       if (sg.how === "blind") state = "blind";
       else if (sg.how === "fragile" && state !== "blind") state = "fragile";
     });
-    $("r-decision").textContent = $("decision").value.trim();
+    return state;
+  }
+
+  function showResult() {
+    var w = words();
+    var sigs = readSignals();
+    var state = overallState();
+    var lead = $("r-lead");
+    lead.textContent = "";
+    lead.appendChild(document.createTextNode(w.lead + " "));
+    var strong = document.createElement("strong");
+    strong.textContent = $("decision").value.trim();
+    lead.appendChild(strong);
+    lead.appendChild(document.createTextNode(" " + w.verb));
+
     var st = $("r-state");
-    st.textContent = STATES[state].word;
+    st.textContent = STATE_WORD[state];
     st.className = "state " + state;
-    $("r-meaning").textContent = STATES[state].meaning;
+    $("r-meaning").textContent = w.states[state];
 
     var list = $("r-signals");
     list.innerHTML = "";
     if (!sigs.length) {
       var li = document.createElement("li");
-      li.textContent = "You did not name anything to watch yet. Naming one or two things is the first way to build sight.";
+      li.textContent = when() === "past"
+        ? "You did not name any signs. Sometimes the signs were there and nobody was looking. Sometimes there were none."
+        : "You did not name anything to watch yet. Naming one or two things is the first way to build sight.";
       list.appendChild(li);
     }
     sigs.forEach(function (sg) {
       var li = document.createElement("li");
       var tag = document.createElement("span");
       tag.className = "tag";
-      tag.textContent = STATES[sg.how].word + ": ";
+      tag.textContent = STATE_WORD[sg.how] + ": ";
       li.appendChild(tag);
       li.appendChild(document.createTextNode(sg.name));
       list.appendChild(li);
@@ -599,9 +649,9 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
 
     var reasonLabels = Array.prototype.map.call(
       document.querySelectorAll("#reasons input:checked"),
-      function (i) { return "\u201c" + textOf(i.parentNode) + "\u201d"; });
+      function (i) { return "“" + labelOf(i) + "”"; });
     $("r-reasons").textContent = reasonLabels.length
-      ? "Your reasons: " + reasonLabels.join(", ") + ". In a session, the reasons behind a choice are often where people see something new."
+      ? "Your reasons: " + reasonLabels.join(", ") + ". The reasons behind a choice are often where people see something new."
       : "";
 
     $("check-panel").hidden = true;
@@ -613,48 +663,51 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
       if (i.type === "text") i.value = ""; else i.checked = false;
     });
     $("check-result").hidden = true;
+    $("lookback").hidden = true;
     $("check-panel").hidden = false;
     show(0);
     $("decision").focus();
   });
 
-  /* Look back */
-  var KINDS = ["Fact", "Opinion", "Assumption", "Belief", "Feeling"];
-  var happenedCount = 0;
-  function addHappened() {
-    happenedCount++;
+  /* Short look back */
+  var KINDS = [
+    ["fact", "Something I can point to, like a date, a number, or an event (a fact)"],
+    ["opinion", "Someone's judgment (an opinion)"],
+    ["assumption", "Something I treated as true without checking (an assumption)"],
+    ["belief", "Something I hold no matter what happens (a belief)"],
+    ["feeling", "How I felt (a feeling)"],
+    ["mixed", "Not sure, or it is a mix"]
+  ];
+  for (var h = 1; h <= 3; h++) {
     var row = document.createElement("div");
     row.className = "happened-row";
-    var n = happenedCount;
-    var opts = '<option value="">Sort it</option>' + KINDS.map(function (k) {
-      return '<option>' + k + '</option>';
-    }).join("");
     row.innerHTML =
-      '<div><label class="field" for="hp' + n + '">Something that happened</label>' +
-      '<input type="text" id="hp' + n + '" maxlength="240"></div>' +
-      '<div><label class="field" for="hk' + n + '">What kind is it?</label>' +
-      '<select id="hk' + n + '">' + opts + '</select></div>';
+      '<label class="field" for="hp' + h + '">Something that happened</label>' +
+      '<input type="text" id="hp' + h + '" maxlength="240">' +
+      '<label class="field" for="hk' + h + '">What kind of information is it?</label>' +
+      '<select id="hk' + h + '"><option value="">Choose one</option>' +
+      KINDS.map(function (k) { return '<option value="' + k[0] + '">' + k[1] + '</option>'; }).join("") +
+      '</select>';
     $("happened").appendChild(row);
-    return row;
   }
-  addHappened(); addHappened();
-  $("add-happened").addEventListener("click", function () {
-    addHappened().querySelector("input").focus();
-  });
 
   var lbSteps = document.querySelectorAll("#lb-panel .lb-step");
   var lbAt = 0;
   function lbShow(i) {
     lbSteps.forEach(function (el, n) { el.hidden = n !== i; });
     lbAt = i;
-    $("lb-progress").textContent = "Step " + (i + 1) + " of " + lbSteps.length;
+    $("lb0-title").textContent = words().hope;
+    $("lb2-title").textContent = when() === "past" ? "What happened?" : "What has happened so far?";
+    $("lb-progress").textContent = "Question " + (i + 1) + " of " + lbSteps.length;
     $("lb-back").hidden = i === 0;
-    $("lb-next-btn").textContent = i === lbSteps.length - 1 ? "See my look back" : "Next step";
+    $("lb-next-btn").textContent = i === lbSteps.length - 1 ? "See my look back" : "Next question";
     var first = lbSteps[i].querySelector("textarea, input");
     if (first) first.focus();
   }
   $("go-lookback").addEventListener("click", function () {
     $("lookback").hidden = false;
+    $("lb-summary").hidden = true;
+    $("lb-panel").hidden = false;
     $("lookback").scrollIntoView({ behavior: still ? "auto" : "smooth" });
     lbShow(0);
   });
@@ -670,50 +723,87 @@ footer .tagline { font-family: "Instrument Serif", Georgia, serif; font-size: 1.
   });
   $("print").addEventListener("click", function () { window.print(); });
 
+  function happenedItems() {
+    var items = [];
+    for (var n = 1; n <= 3; n++) {
+      var t = $("hp" + n).value.trim();
+      if (!t) continue;
+      var k = $("hk" + n).value;
+      items.push({ text: t, kind: k });
+    }
+    return items;
+  }
+  var KIND_SHORT = { fact: "Fact", opinion: "Someone's judgment", assumption: "Assumption", belief: "Belief", feeling: "Feeling", mixed: "Not sure or mixed", "": "Not sorted" };
+
+  function openQuestions(items) {
+    var q = [];
+    var unsure = items.filter(function (i) { return i.kind === "mixed" || i.kind === ""; });
+    if (unsure.length) {
+      q.push("Pull apart “" + unsure[0].text + "”. Which part can you point to, and which part is someone's judgment? Whose judgment is it, and what did they see?");
+    } else if (items.some(function (i) { return i.kind === "opinion"; })) {
+      q.push("One thing that happened is someone's judgment. Whose is it, and what did they see that you did not?");
+    }
+    if (items.some(function (i) { return i.kind === "feeling"; })) {
+      q.push("A feeling is real information. What was it telling you, and about what?");
+    }
+    var helpers = checked("helpers");
+    var named = { expert: "an expert, boss, or advisor", ai: "an AI tool", tool: "software, a template, or a system", policy: "a policy, rule, or framework", people: "people close to you" };
+    var handed = helpers.filter(function (x) { return named[x]; }).map(function (x) { return named[x]; });
+    if (handed.length) {
+      q.push("You had help from " + handed.join(" and ") + ". What part of the decision did you hand to them, and what part stayed yours?");
+    }
+    q.push("Is the problem you were solving the one you actually had? Sometimes the gap points to a different problem.");
+    q.push(when() === "past"
+      ? "What would you watch next time, so you see a shift sooner?"
+      : "What will you watch from here, and would you see it drift in time to act?");
+    return q.slice(0, 4);
+  }
+
+  var notesText = "";
   function addPair(dl, term, value) {
     if (!value) return;
     var dt = document.createElement("dt"); dt.textContent = term;
     var dd = document.createElement("dd"); dd.textContent = value;
     dl.appendChild(dt); dl.appendChild(dd);
+    notesText += term + "\n" + value + "\n\n";
   }
   function buildSummary() {
     var dl = $("lb-out");
     dl.innerHTML = "";
+    notesText = "";
     var v = function (id) { return $(id).value.trim(); };
     addPair(dl, "The decision", v("decision"));
-    addPair(dl, "What I was trying to create", v("lb-situation"));
-    addPair(dl, "What I believed the problem was", v("lb-frame"));
-    addPair(dl, "What my tools and people were used for", v("lb-tools"));
-    addPair(dl, "What I was betting on", v("lb-bet"));
+    addPair(dl, "Clarity Check result", STATE_WORD[overallState()]);
+    addPair(dl, "What I was hoping for", v("lb-hope"));
+    addPair(dl, "What I was betting on", v("lb-bet") ? "I acted as though " + v("lb-bet") : "");
+    var items = happenedItems();
+    addPair(dl, "What happened", items.map(function (i) {
+      return i.text + " (" + KIND_SHORT[i.kind] + ")";
+    }).join("\n"));
 
-    var rows = Array.prototype.map.call(document.querySelectorAll(".happened-row"), function (r) {
-      var t = r.querySelector("input").value.trim();
-      var k = r.querySelector("select").value;
-      return t ? (k ? k + ": " : "") + t : "";
-    }).filter(Boolean);
-    addPair(dl, "What happened", rows.join("\n"));
+    var ol = $("lb-questions");
+    ol.innerHTML = "";
+    var qs = openQuestions(items);
+    notesText += "Questions to look at next\n";
+    qs.forEach(function (text, n) {
+      var li = document.createElement("li");
+      li.textContent = text;
+      ol.appendChild(li);
+      notesText += (n + 1) + ". " + text + "\n";
+    });
 
-    if (v("lb-expected") || v("lb-observed")) {
-      var dt = document.createElement("dt"); dt.textContent = "The gap";
-      var dd = document.createElement("dd");
-      var table = document.createElement("table");
-      table.className = "gap-table";
-      var head = table.insertRow();
-      ["I expected", "I observed"].forEach(function (h) {
-        var th = document.createElement("th"); th.scope = "col"; th.textContent = h; head.appendChild(th);
-      });
-      var body = table.insertRow();
-      [v("lb-expected"), v("lb-observed")].forEach(function (c) { body.insertCell().textContent = c; });
-      dd.appendChild(table);
-      dl.appendChild(dt); dl.appendChild(dd);
-    }
-    addPair(dl, "What I can see now", v("lb-see"));
-    addPair(dl, "My next step this week", v("lb-next"));
-
+    $("copy-status").textContent = "";
     $("lb-panel").hidden = true;
     $("lb-summary").hidden = false;
     $("lb-summary").focus();
   }
+  $("copy-notes").addEventListener("click", function () {
+    var done = function () { $("copy-status").textContent = "Copied. You can paste your notes into the conversation form."; };
+    var fail = function () { $("copy-status").textContent = "Copying did not work in this browser. Use Print or save as PDF instead."; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(notesText.trim()).then(done, fail);
+    } else { fail(); }
+  });
 })();
 </script>
 </body>
